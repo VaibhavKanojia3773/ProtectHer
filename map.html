@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathPradarshan</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <style>
+        #map {
+            width: 100%;
+            height: 80vh; /* Adjusted height for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <div id='map'></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script>
+        var map = L.map('map').setView([28.749816, 77.117257], 20);
+
+        var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        });
+        osm.addTo(map);
+
+        var fromMarker, toMarker, routingControl;
+
+        // Function to set markers on the map
+        function setMarker(latlng, isFrom) {
+            if (isFrom) {
+                if (fromMarker) map.removeLayer(fromMarker);
+                fromMarker = L.marker(latlng).addTo(map).bindPopup("From").openPopup();
+            } else {
+                if (toMarker) map.removeLayer(toMarker);
+                toMarker = L.marker(latlng).addTo(map).bindPopup("To").openPopup();
+                calculateAndDisplayRoute();
+            }
+        }
+
+        // Calculate and display the route using Leaflet Routing Machine
+        function calculateAndDisplayRoute() {
+            if (fromMarker && toMarker) {
+                if (routingControl) {
+                    map.removeControl(routingControl);
+                }
+                routingControl = L.Routing.control({
+                    waypoints: [
+                        fromMarker.getLatLng(),
+                        toMarker.getLatLng()
+                    ],
+                    routeWhileDragging: true,
+                    lineOptions: {
+                        styles: [{color: 'black', opacity: 0.8, weight: 6}]
+                    }
+                }).addTo(map);
+            }
+        }
+
+        // Event listener for map clicks to set the "from" and "to" markers
+        var clickCount = 0;
+        map.on('click', function(e) {
+            clickCount++;
+            if (clickCount % 2 === 1) {
+                setMarker(e.latlng, true);  // First click sets the "from" location
+            } else {
+                setMarker(e.latlng, false);  // Second click sets the "to" location
+            }
+        });
+
+        // Adding red hotspots on the map
+        var hotspots = [
+            [28.753899, 77.115622],
+            [28.751825, 77.119257],
+            <!-- [28.753207, 77.114435], -->
+            [28.749991, 77.112259],
+            [28.749859, 77.120715],
+            
+            [28.747039, 77.118061],
+            [28.745407, 77.115953]
+        ];
+
+        hotspots.forEach(function(latlng) {
+            L.circle(latlng, {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 50
+            }).addTo(map);
+        });
+    </script>
+</body>
+</html>
