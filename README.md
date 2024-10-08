@@ -56,3 +56,23 @@
 
 - **Purpose:** Identify areas where incidents are more likely to occur based on historical data.
 - **Benefit:** Helps in strategic planning and deployment of resources to high-risk areas.
+
+
+
+
+![image](https://github.com/user-attachments/assets/2ca65a7b-a69a-4149-8657-fc988a75d7e8)
+
+![image](https://github.com/user-attachments/assets/e68a8790-ffc7-4ae0-8a68-c84893f6eee6)
+
+![image](https://github.com/user-attachments/assets/e6069868-2a47-4586-8c02-0c03448c8c13)
+
+![image](https://github.com/user-attachments/assets/e989c081-197d-4f10-a5a3-2984d1eed3c6)
+
+![image](https://github.com/user-attachments/assets/4d1604d8-ab92-4da5-b48d-b033f98b1d01)
+
+![Screenshot 2024-09-05 222221](https://github.com/user-attachments/assets/8f5d3c90-76a7-4ce4-b71d-3d646944692e)
+
+THE END !!!
+
+
+
