@@ -1,5 +1,5 @@
 import { FilesetResolver, FaceDetector } from '@mediapipe/tasks-vision';
-import * as faceapi from 'face-api.js';
+import * as faceapi from '@vladmandic/face-api';
 
 let faceDetector = null;
 let faceApiReady = false;

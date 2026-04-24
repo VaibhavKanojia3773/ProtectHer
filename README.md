@@ -46,7 +46,7 @@ dashboard — all running locally on a single laptop.
 │                                                                  │
 │  ML in browser  ┌─────────────────────────────────────────────┐  │
 │  ─────────────► │ MediaPipe FaceDetector  (every frame)        │ │
-│                 │ face-api.js  (gender + emotion, every 4th)   │ │
+│                 │ @vladmandic/face-api  (gender + emotion, every 4th)   │ │
 │                 │ Fusion combiner  (alert rules + cooldowns)   │ │
 │                 └──────────────┬──────────────────────────────┘  │
 └─────────────────────────────────┼──────────────────────────────┘
@@ -76,8 +76,8 @@ that's the project's actual IP.
 | Stage | Model | Where it runs | Cadence | Job |
 | --- | --- | --- | --- | --- |
 | 1. Face detection | MediaPipe **BlazeFace** (short-range, fp16 TFLite, GPU) | Browser via `@mediapipe/tasks-vision` | **Every frame** (~30 FPS) | Bounding boxes + score |
-| 2. Gender + Age | **face-api.js `ageGenderNet`** (MobileNetV1-based, 6 MB) | Browser | **Every 4th frame** (~7 FPS) | `{ gender, genderProb, age }` per face |
-| 3. Facial expression | **face-api.js `faceExpressionNet`** (7-class softmax) | Browser | Every 4th frame | Top emotion of {angry, disgusted, fearful, happy, neutral, sad, surprised} |
+| 2. Gender + Age | **@vladmandic/face-api `ageGenderNet`** (MobileNetV1-based, 6 MB) | Browser | **Every 4th frame** (~7 FPS) | `{ gender, genderProb, age }` per face |
+| 3. Facial expression | **@vladmandic/face-api `faceExpressionNet`** (7-class softmax) | Browser | Every 4th frame | Top emotion of {angry, disgusted, fearful, happy, neutral, sad, surprised} |
 | 4. Harassment classifier | **VGG16 + custom Dense head** (`harass.h5`, ~26 M params, trained on 1 000 paired frames, 88.5 % test accuracy) | Local Python (Flask + TF 2.17) | **Every 3 s** (or pause when camera off) | `score ∈ [0, 1]`, label ∈ {Harassment, Healthy} |
 
 ### How the classifier was trained
@@ -163,7 +163,7 @@ dispatches expensive work by modulo:
 | Frame mod | Work |
 | --- | --- |
 | `% 1` | MediaPipe face detection + canvas draw |
-| `% 4` | face-api.js gender + emotion |
+| `% 4` | @vladmandic/face-api gender + emotion |
 | `% 90` (≈ 3 s) | POST snapshot to Python `/infer` |
 
 Heavy work runs in `tf.tidy`-equivalent contexts to avoid GC pauses.
@@ -203,7 +203,7 @@ proxy — see *Security notes* below.
 
 ### ML / DL
 - **MediaPipe Tasks (Vision)** — Google's WebGL-accelerated face detector.
-- **face-api.js** — pre-trained MobileNet-style nets for gender + expression.
+- **@vladmandic/face-api** — pre-trained MobileNet-style nets for gender + expression.
 - **TensorFlow 2.17** (server) — loads `harass.h5` and ImageNet VGG16.
 - **OpenCV-Python 4.10** — JPEG decode + BGR↔RGB.
 
@@ -362,7 +362,7 @@ restrict origins in `app.py`.
 
 - **Author:** [Vaibhav Kanojia](https://github.com/VaibhavKanojia3773) — Team TechRizz, SIH 2024.
 - Map tiles © OpenStreetMap contributors, © CARTO.
-- Pre-trained gender + expression weights © face-api.js authors.
+- Pre-trained gender + expression weights © @vladmandic/face-api authors.
 - BlazeFace TFLite model © Google MediaPipe.
 
 ## 📄 License
