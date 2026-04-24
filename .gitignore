@@ -1,0 +1,36 @@
+# Node / Vite
+node_modules/
+dist/
+.vite/
+*.log
+npm-debug.log*
+
+# Python backend
+server/venv/
+server/__pycache__/
+server/*.pyc
+__pycache__/
+
+# Trained model weights — too large for git, keep locally / in releases
+_model_source/
+*.h5
+*.tflite
+*.onnx
+*.pb
+*.weights
+
+# Environment + secrets
+.env
+.env.local
+.env.*.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Build artifacts that should never be committed
+*.tmp
+get-pip.py
